@@ -28,7 +28,7 @@ class Controller:
         return data
     def test(self):
         self.download_dictionary()
-        self.entity.fname = 'kr-Report_2018.txt'
+        self.entity.fname = 'kr.txt'
         self.entity.context = 'C:\\Users\\AIA\\project\\jdango_new\\nlp\\samsung_report\\data\\'
         self.service.extract_tokens(self.entity)
         self.service.extract_hangeul()
@@ -43,4 +43,4 @@ class Controller:
 if __name__ == '__main__':
 
     app = Controller()
-    app.data_analysis()
+    app.test()

@@ -1,15 +1,20 @@
 from django.db import models
 
-# Create your models here.
+from security.seq_users.models import SeqUser
+
+
 class Post(models.Model):
     use_in_migration = True
     post_id = models.AutoField(primary_key=True)
-    title = models.TextField()
-    content = models.TextField()
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    title = models.CharField(max_length=100)
+    content = models.CharField(max_length=1000)
+    create_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    user = models.ForeignKey(SeqUser, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'blog_posts'
+        db_table = "blog_posts"
     def __str__(self):
-        return f'{self.pk} {self.title} {self.content} {self.created_at} {self.updated_at}'
+        return f'{self.pk} {self.title} {self.content} {self.create_at}' \
+               f' {self.updated_at}'

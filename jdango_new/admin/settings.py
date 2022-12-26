@@ -35,10 +35,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "blog",
-    "movie",
-    "shop",
-    "ml",
+    'blog.busers','blog.views','blog.posts','blog.tags','blog.comments',
+    'security.seq_users',
+    "movie.movies","movie.musers",'movie.cinemas','movie.theaters','movie.theaters_tickets','movie.showtimes',
+    "shop.products",'shop.carts','shop.orders','shop.deliveries','shop.categories',"shop.susers",
 
     "rest_framework",
 
