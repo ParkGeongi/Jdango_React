@@ -21,7 +21,8 @@ def suser_views(request):
     # = UserService().df_to_sql()
     #dic = [{'email':'p','nickname':'q','password':'1'},{'email':'2','nickname':'4','password':'5'}]
     #print(f'GET 리턴 결과 : {a}')
-    data= SUserService().dataframe_create()
+    data = SUserService().get_users()
+
     ##[{'maximum_frequency_word': key}, {'maximum_frequency_count': value}]
     #ls = [{'maximum_frequency_word':key ,'maximum_frequency_count':value}]
     return JsonResponse({'result': data})

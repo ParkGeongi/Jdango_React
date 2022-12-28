@@ -44,11 +44,16 @@ class SUserService(object):
         print(data)
         df = pd.DataFrame(data)
         print(df)
-        return df
+        return data
 
     def get_users(self):
-        pass
+        engine = create_engine(
+            "mysql+pymysql://root:root@localhost:3306/mydb",
+            encoding='utf-8')
+        df = pd.read_sql_query('select * from seq_users', engine)
+        data = df.to_dict('records')
+        return data
 
 if __name__ == '__main__':
-    s =SUserService()
-    s.df_to_sql() # 만듬 이미 돌리지마
+
+    pass

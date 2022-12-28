@@ -4,7 +4,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from dataclasses import dataclass
 import pandas as pd
-from src.cmm.const.path import static
+
 
 @dataclass
 class ScrapVO:
@@ -26,7 +26,7 @@ class ScrapVO:
         self.df = pd.DataFrame.from_dict(self.diction, orient='index')
 
     def dataframe_to_csv(self):
-        path = f'{static}/save/cop/scp/melon_ranking.csv'
+        path = f'/save/cop/scp/melon_ranking.csv'
         self.df.to_csv(path, sep=',', na_rep="NaN", header=None)
 
 def BugsMusic(arg):
@@ -94,7 +94,7 @@ if __name__=="__main__":
             scrap.tag_name = "div"
             MelonMusic(scrap)
         elif menu == "3":
-            df = pd.read_csv(f"{static}/save/cop/scp/bugs_ranking.csv")
+            df = pd.read_csv(f"/save/cop/scp/bugs_ranking.csv")
             print(df)
         else:
             print("해당메뉴 없음")

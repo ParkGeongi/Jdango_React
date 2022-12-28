@@ -93,8 +93,8 @@ class SamsungService:
         print('빈도수로 정렬')
         self.freqtxt = pd.Series(dict(FreqDist(self.texts))).sort_values(ascending=False)
         data = []
-        a = 1
-        [data.append({'index':str(a),'freq_word':key,'freq_num':str(value)}) for key, value in dict(self.freqtxt).items()]
+        i=1
+        [data.append({'index':i,'freq_word':key,'freq_num':str(value)}) for key, value, in dict(self.freqtxt).items()]
 
         print(data)
         return data
