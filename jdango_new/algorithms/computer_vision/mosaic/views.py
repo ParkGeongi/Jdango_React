@@ -4,10 +4,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-from src.cmm.com.service.dataset import Dataset
-from src.dam.computer_vision.service.mosaic import Canny, HoughLines, Haar, Mosaic, Mosaic_People, Origin, Gray
-from src.utl.fcc.service.lambdas import Mosaic_Lambdas
 from PIL import Image
+
+from algorithms.common import Common
+from algorithms.computer_vision.mosaic.models import Canny, HoughLines, Haar, Mosaic, Mosaic_People, Gray, Origin
+from algorithms.dataclass import Dataset
+from algorithms.lambas import Mosaic_Lambdas
 
 
 class MenuController(object):
@@ -234,5 +236,4 @@ if __name__ == '__main__':
 
             else:
                 print(" ### 해당 메뉴 없음 ### ")
-
 

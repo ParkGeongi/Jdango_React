@@ -93,8 +93,8 @@ imdb_lambda = {
     "1": lambda x: x.hook(),
 }
 if __name__ == '__main__':
-    n =NaverMovieService()
-    n.crawling()
+    n =ImdbService()
+    n.plt_grapth()
 
 
 '''

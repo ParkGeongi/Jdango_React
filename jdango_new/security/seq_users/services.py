@@ -45,15 +45,18 @@ class SUserService(object):
         df = pd.DataFrame(data)
         print(df)
         return data
+    def get_users(self)->[]:
+        print('포스트벤 요청이 도달하였음 !')
 
-    def get_users(self):
+    def to_react(self):
         engine = create_engine(
             "mysql+pymysql://root:root@localhost:3306/mydb",
             encoding='utf-8')
         df = pd.read_sql_query('select * from seq_users', engine)
+        print(df)
         data = df.to_dict('records')
+        print(data)
         return data
 
 if __name__ == '__main__':
-
-    pass
+    SUserService().to_react()

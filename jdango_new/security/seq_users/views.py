@@ -11,18 +11,18 @@ from security.seq_users.services import SUserService
 
 
 # Create your views here.
+@api_view(["GET"])
+@parser_classes([JSONParser])
+def list(request):
+    data= SUserService().to_react()
+    return JsonResponse({'result': data})
+
 
 @api_view(["GET"])
 @parser_classes([JSONParser])
 def suser_views(request):
+    SUserService().get_users()
+    return JsonResponse({'result': 'Success'})
 
-    #print(f"######## GET id is {request.GET['id']} ########")
-    #index = int(request.GET['id']) -1
-    # = UserService().df_to_sql()
-    #dic = [{'email':'p','nickname':'q','password':'1'},{'email':'2','nickname':'4','password':'5'}]
-    #print(f'GET 리턴 결과 : {a}')
-    data = SUserService().get_users()
-
-    ##[{'maximum_frequency_word': key}, {'maximum_frequency_count': value}]
-    #ls = [{'maximum_frequency_word':key ,'maximum_frequency_count':value}]
-    return JsonResponse({'result': data})
+def login(request):
+    pass

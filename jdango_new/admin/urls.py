@@ -27,5 +27,6 @@ urlpatterns = [
     path('ml/', include('ml.number.urls')),
     path('webcrawler/', include('webcrawler.urls')),
     path('nlp/', include('nlp.samsung_report.urls')),
-    path('security/', include('security.seq_users.urls'))
+    path('security/', include('security.seq_users.urls')),
+    path('nlp/', include('nlp.naver_movie.urls'))
 ]
