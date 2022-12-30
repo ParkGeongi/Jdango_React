@@ -1,7 +1,7 @@
 import { nlp,server } from "context";
 
 const NLPService = {
-    getSamsung
+    getSamsung,getReview,postReview
 }
 
 function handleResponse(response){ 
@@ -20,7 +20,30 @@ function handleResponse(response){
         })
     }
 
+    async function postReview(req){
+        const requestOption = {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(req)
+        }
+        const res = await fetch(`${server}${nlp}review`, requestOption)
+        .then(handleResponse)
+        .then(data => JSON.stringify(data))
+        .catch((error) => {
+            alert('error :::: '+error)
+        })
+        return Promise.resolve(res) 
+    }
 
+    async function getReview(req2){
+        const res = await fetch(`${server}${nlp}review?req2=${req2}`)
+        .then(handleResponse)
+        .then(data =>  JSON.stringify(data))
+        .catch((error) => {
+            alert('error ::::'+error)
+        })
+         return Promise.resolve(res);          
+        }
 
 async function getSamsung(){
     const res = await fetch(`${server}${nlp}samsung-report`)

@@ -5,7 +5,7 @@ import 'webcrawler/styles/table.css'
 import NLPService from "nlp/api"
 
 const Samsung =()=>{
-    const [report, setReport] = useState()
+    const [report, setReport] = useState([])
 
     
 
@@ -40,7 +40,7 @@ const Samsung =()=>{
           <tbody>
           {report && report.map(({index,freq_word,freq_num})=>(
     
-            <tr key = {index}><td>{index}</td><td>{freq_word}</td><td>{freq_num}</td></tr>
+            <tr key = {index}><td >{index}</td><td>{freq_word}</td><td>{freq_num}</td></tr>
           
           ))}
           </tbody>

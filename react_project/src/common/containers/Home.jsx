@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import { LoginForm } from "auth"
+import { Login } from "auth"
 
 import {Counter, Footer, Navigation2} from "common"
 import { Schedule } from "todos"
@@ -7,7 +7,9 @@ import dog from '../../images/fashion.png'
 import { Number,Fashion, Iris, Stroke} from "ml"
 import {NaverMovie } from "webcrawler"
 import { BlogSignup } from "blog"
-import { Samsung } from "nlp"
+import { Review, Samsung } from "nlp"
+import { SeqLogin, SeqUsers } from "security"
+import SeqUserList from "security/containers/SeqUserList"
 
 
 const Home = () => {
@@ -29,7 +31,7 @@ const Home = () => {
          <Routes>   
             <Route path="/counter" element={<Counter/>}></Route>
             <Route path="/todos" element={<Schedule/>}></Route>
-            <Route path="/login" element={<LoginForm/>}></Route>
+            <Route path="/login" element={<Login/>}></Route>
             <Route path="/signup" element={<BlogSignup/>}></Route>
             <Route path="/iris" element={<Iris/>}></Route>
             <Route path="/stroke" element={<Stroke/>}></Route>
@@ -37,6 +39,10 @@ const Home = () => {
             <Route path="/number" element={<Number/>}></Route>
             <Route path="/navermoives" element={<NaverMovie/>}></Route>
             <Route path="/samsung" element={<Samsung/>}></Route>
+            <Route path="/sequsers" element={<SeqUsers/>}></Route>
+            <Route path="/review" element={<Review/>}></Route>
+            <Route path="/sequserlist" element={<SeqUserList/>}></Route>
+            <Route path="/seq-login" element={<SeqLogin/>}></Route>
         </Routes>
         </td>
         </tr>

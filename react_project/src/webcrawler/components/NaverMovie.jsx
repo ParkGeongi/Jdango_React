@@ -5,10 +5,6 @@ import 'webcrawler/styles/table.css'
 const NaverMovie =()=>{
     const [movie, setMovie] = useState()
 
-    
-
-
-
     const onClick = e => {
         e.preventDefault()
         WebcrawlerService.getNaver().then(res => {
@@ -29,7 +25,7 @@ const NaverMovie =()=>{
     </form>
 
     <p>버튼을 클릭하면, 네이버 영화 목록이 출력됩니다.</p>
-    <table>
+    <table className='type1'>
       <thead>
         <tr>
         <th>순위</th><th>영화목록</th>
