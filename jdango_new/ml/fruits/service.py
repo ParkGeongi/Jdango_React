@@ -8,13 +8,16 @@ import seaborn as sns
 from tensorflow import keras
 from keras.callbacks import ModelCheckpoint
 
+from paths.path import dir_path
+
+
 class FruitsService:
     def __init__(self):
         global imagepath, model,batch_size, img_height, img_width, train_ds_pre, val_ds_pre,test_ds_pre,test_ds1_pre, train_ds, val_ds,test_ds, class_names, num_classes
 
-        imagepath = r'C:\Users\AIA\project\jdango_new\ml\fruits\data\Training\Apple Golden 3\0_100.jpg'
-        train_dir = r'C:\Users\AIA\project\jdango_new\ml\fruits\data\Training'
-        test_dir = r'C:\Users\AIA\project\jdango_new\ml\fruits\data\Test'
+        imagepath = dir_path('fruits')+r'\data\Training\Apple Golden 3\0_100.jpg'
+        train_dir = dir_path('fruits')+ 'r\data\Training'
+        test_dir = dir_path('fruits') + 'r\data\Test'
         batch_size = 32
         img_height = 100
         img_width = 100
@@ -109,7 +112,7 @@ class FruitsService:
             optimizer='adam',
             loss=tf.losses.SparseCategoricalCrossentropy(),
             metrics=['accuracy'])
-        checkpointer = ModelCheckpoint(r'C:\Users\AIA\project\jdango_new\ml\fruits\save\CNNClassifier.h5', save_best_only=True)
+        checkpointer = ModelCheckpoint(dir_path('fruits')+r'\save\CNNClassifier.h5', save_best_only=True)
         early_stopping_cb = keras.callbacks.EarlyStopping(patience=5, monitor='val_accuracy',
                                                           restore_best_weights=True)
         epochs = 20
@@ -187,7 +190,7 @@ class FruitsService:
             layers.Dropout(.50),
             layers.Dense(num_classes, activation='softmax')
         ])
-        model.load_weights(r'C:\Users\AIA\project\jdango_new\ml\fruits\save\CNNClassifier.h5')
+        model.load_weights(dir_path('fruits')+r'\save\CNNClassifier.h5')
         predictions = model.predict(test_ds)
 
         y1 = np.concatenate([y for x, y in test_ds], axis=0)

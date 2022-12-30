@@ -1,24 +1,23 @@
-import numpy as np
 import pandas as pd
 
 from keras import Sequential
-from keras.layers import Dense, Dropout
-from keras.utils import np_utils
+from keras.layers import Dense
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
-from tensorflow import keras
+from sklearn.preprocessing import OneHotEncoder
+from paths.path import dir_path
+
 
 class SquartModel(object):
     def __init__(self):
         pass
 
     def preprocess(self):
-        df = pd.read_csv(r'C:\Users\AIA\project\jdango_new\ml\squart\data\증가증가5개라벨.csv')
+        df = pd.read_csv(dir_path('squart')+r'\data\증가증가5개라벨.csv')
         df = (df - df.mean()) / df.std()
         print(df.sample(5))
     def split(self):
-        df = pd.read_csv(r'C:\Users\AIA\project\jdango_new\ml\squart\data\증가증가5개라벨.csv')
+        df = pd.read_csv(dir_path('squart')+r'\data\증가증가5개라벨.csv')
         train, test = train_test_split(df, test_size=0.3)
         #train, val = train_test_split(train, test_size=0.15)
         X_train = train[
@@ -97,7 +96,7 @@ class SquartModel(object):
         plt.legend()
         plt.show()
 
-        file_name = './save/squart_model_4.h5'
+        file_name = dir_path('squart')+'r\save\squart_model_4.h5'
         model.save(file_name)
         print(f'Model Save in {file_name}')
 

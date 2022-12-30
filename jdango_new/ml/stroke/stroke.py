@@ -9,6 +9,9 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import GridSearchCV
 import seaborn as sns
 import matplotlib.pyplot as plt
+
+from paths.path import dir_path
+
 #font_path = "C:/Windows/Fonts/malgunbd.ttf"
 #font = font_manager.FontProperties(fname=font_path).get_name()
 #rc('font', family=font)
@@ -55,7 +58,7 @@ class Stroke:
     save = f"./save/stroke"
 
     def __init__(self):
-        self.stroke = pd.read_csv(r'C:\Users\AIA\project\jdango_new\ml\iris\data\iris\Iris.csv')
+        self.stroke = pd.read_csv(dir_path('stroke')+r'\data\healthcare-dataset-stroke-data.csv')
         self.my_stroke = None
         self.adult_stoke = None
         self.target = None

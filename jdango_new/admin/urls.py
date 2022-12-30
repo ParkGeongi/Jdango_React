@@ -20,6 +20,7 @@ from admin.views import hello
 
 urlpatterns = [
     path("", hello),
+
     path('blog/',include('blog.busers.urls')),
     path('ml/', include('ml.iris.urls')),
     path('ml/', include('ml.stroke.urls')),
@@ -29,4 +30,5 @@ urlpatterns = [
     path('nlp/', include('nlp.samsung_report.urls')),
     path('security/', include('security.seq_users.urls')),
     path('nlp/', include('nlp.naver_movie.urls'))
+
 ]

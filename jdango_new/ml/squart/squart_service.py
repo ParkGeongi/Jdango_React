@@ -7,14 +7,16 @@ from sklearn.model_selection import train_test_split
 import seaborn as sns
 from sklearn.preprocessing import OneHotEncoder
 
+from paths.path import dir_path
+
 
 class SquartService(object):
     def __init__(self):
         pass
 
     def service_model(self,i):
-        model = load_model(r'C:\Users\AIA\project\jdango_new\ml\squart\save\squart_model_4.h5.h5')
-        df = pd.read_csv(r'C:\Users\AIA\project\jdango_new\ml\squart\data\tt.csv')
+        model = load_model(dir_path('squart')+r'\save\squart_model_4.h5.h5')
+        df = pd.read_csv(dir_path('squart')+r'\data\tt.csv')
         train, test = train_test_split(df, test_size=0.99)
         print(test.shape)
         x_test = test[
@@ -34,8 +36,8 @@ class SquartService(object):
         print(f'###################### 예측 값 : {pred}')
         print(f'###################### 실제 값 : {y_test.loc[i]}')
     def confusoin_matrix(self):
-        model = load_model(r'C:\Users\AIA\project\jdango_new\ml\squart\save\squart_model3.h5')
-        df = pd.read_csv(r'C:\Users\AIA\project\jdango_new\ml\squart\data\tt.csv')
+        model = load_model(dir_path('squart')+r'\save\squart_model3.h5')
+        df = pd.read_csv(dir_path('squart')+r'\data\tt.csv')
 
         X = df[
             ['x[0]', 'x[1]', 'x[2]', 'x[3]', 'x[4]', 'x[5]', 'x[6]', 'x[7]', 'x[8]', 'x[9]', 'x[10]', 'x[11]', 'x[12]',

@@ -1,10 +1,9 @@
-import os
-
 import matplotlib.pyplot as plt
 import numpy as np
 from keras.models import load_model
-from sklearn import datasets
 from tensorflow import keras
+
+from paths.path import dir_path
 
 
 class FashionService(object):
@@ -16,7 +15,7 @@ class FashionService(object):
 
     def service_model(self,i) -> '':
         #model = load_model(os.path.join(os.path.abspath("save"), "fashion_model.h5"))
-        model = load_model(r'C:\Users\AIA\project\jdango_new\ml\mnist\save\fashion_model.h5')
+        model = load_model(dir_path('mnist')+r'\save\fashion_model.h5')
         (train_images, train_labels), (test_images, test_labels) = keras.datasets.fashion_mnist.load_data()
 
         predictions = model.predict(test_images)

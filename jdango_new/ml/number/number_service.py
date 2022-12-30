@@ -1,10 +1,8 @@
-import os
-
-import matplotlib.pyplot as plt
 import numpy as np
 from keras.models import load_model
-from sklearn import datasets
 import tensorflow as tf
+
+from paths.path import dir_path
 
 
 class NumberService(object):
@@ -15,7 +13,7 @@ class NumberService(object):
 
     def service_model(self,i):
 
-        model = load_model(r'C:\Users\AIA\project\jdango_new\ml\number\save\number_model.h5')
+        model = load_model(dir_path('number')+'\\save\\number_model.h5')
         (train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.mnist.load_data()
 
         predictions = model.predict(test_images)

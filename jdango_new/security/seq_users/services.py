@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from basic import lambdas
 
 
-class SUserService(object):
+class SeqUserService(object):
     def __init__(self):
         pass
     def df_to_sql(self):
@@ -59,4 +59,4 @@ class SUserService(object):
         return data
 
 if __name__ == '__main__':
-    SUserService().to_react()
+    SeqUserService().to_react()

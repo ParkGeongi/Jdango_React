@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class Msser(models.Model):
+class MUser(models.Model):
     use_in_migration = True
     movie_userid = models.AutoField(primary_key=True)
     email = models.TextField()

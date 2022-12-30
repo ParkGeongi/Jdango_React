@@ -10,6 +10,10 @@ import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from sklearn.model_selection import train_test_split
+
+from paths.path import dir_path
+
+
 class ImdbService(object):
 
     def __init__(self):
@@ -44,7 +48,7 @@ class ImdbService(object):
 class NaverMovieService(object):
     def __init__(self):
         global url, savepath, encoding
-        savepath = r'C:\Users\AIA\project\jdango_new\nlp\imdb\save'
+        savepath = dir_path('imdb')+'\\save'
         encoding = "UTF-8"
         url ='https://movie.naver.com/movie/point/af/list.naver?&page='
 
@@ -57,7 +61,7 @@ class NaverMovieService(object):
 
         else:
 
-            driver = webdriver.Chrome(r'C:\Users\AIA\project\jdango_new\webcrawler\chromedriver.exe')
+            driver = webdriver.Chrome(dir_path('webcrawler') + '\\chromedriver.exe')
             review_data = []
 
             for page in range(1, 3):

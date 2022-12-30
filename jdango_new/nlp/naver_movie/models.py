@@ -1,5 +1,4 @@
 import csv
-import os.path
 import time
 from collections import defaultdict
 from math import log, exp
@@ -8,11 +7,11 @@ from os import path
 
 import numpy as np
 import pandas as pd
-import tensorflow as tf
-import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from sklearn.model_selection import train_test_split
+
+from paths.path import dir_path
+
 
 
 class NaverMovieModel(object):
@@ -21,10 +20,11 @@ class NaverMovieModel(object):
         self.word_probs = []
         encoding = "UTF-8"
         #filename = os.path.join(os.getcwd(),'nlp\\naver_review\\data\\review_train.csv')
-        filename = r'C:\Users\AIA\project\jdango_new\nlp\naver_movie\data\review_train.csv'
+
+        filename = dir_path('naver_movie') +'\\data\\review_train.csv'
         url = 'https://movie.naver.com/movie/point/af/list.naver?&page='
-        driver_path = r'C:\Users\AIA\project\jdango_new\webcrawler\chromedriver.exe'
-        savepath = os.path.join(os.getcwd(), 'data\\review_train.csv')
+        driver_path =dir_path('webcrawler')+ '\\chromedriver.exe'
+        savepath = dir_path('naver_movie')+ 'save\\review_train.csv'
         k = 0.5
 
     def crawling(self):

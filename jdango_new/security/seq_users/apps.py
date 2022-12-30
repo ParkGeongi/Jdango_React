@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SusersConfig(AppConfig):
+class SeqUserConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "security.seq_users"

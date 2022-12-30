@@ -4,5 +4,5 @@ from models import Cinemas
 
 class CinemasSerializer(serializers.ModelSerializer):
     class Meta:
-        medel = Cinemas
+        model = Cinemas
         fields = '__all__'

@@ -1,20 +1,15 @@
-import os
-
 import numpy as np
-import pandas as pd
 from sklearn import datasets
-from sklearn.preprocessing import OneHotEncoder
-from keras.layers import Dense
-import tensorflow as tf
 from keras.models import load_model
-from tensorflow.python.framework.ops import get_default_graph
+
+from paths.path import dir_path
 
 
 class IrisService(object):
 
     def __init__(self):
         global model , graph, target_names
-        model = load_model(r'C:\Users\AIA\project\jdango_new\ml\iris\save\iris_model.h5')
+        model = load_model(dir_path('iris')+r'\save\iris_model.h5')
         #model = load_model(os.path.join(os.path.abspath("save"), "iris_model.h5"))
         target_names = datasets.load_iris().target_names
 

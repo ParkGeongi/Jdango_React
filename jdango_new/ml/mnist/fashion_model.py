@@ -1,10 +1,8 @@
 import matplotlib.pyplot as plt
-import pandas as pd
-from sklearn import datasets
-from sklearn.preprocessing import OneHotEncoder
-from keras.layers import Dense
 from keras import Sequential
 from tensorflow import keras
+
+from paths.path import dir_path
 
 
 class FashionModel(object):
@@ -42,7 +40,7 @@ class FashionModel(object):
         model.fit(train_images, train_labels, epochs=10)
         test_loss, test_acc = model.evaluate(test_images, test_labels)
         print(f'Test accuracy is {test_acc}')
-        file_name = './save/fashion_model.h5'
+        file_name = dir_path('mnist')+'\\save\\fashion_model.h5'
         model.save(file_name)
         print(f'Model Save in {file_name}')
 

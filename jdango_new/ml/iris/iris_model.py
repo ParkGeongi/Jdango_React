@@ -1,8 +1,10 @@
-import pandas as pd
 from sklearn import datasets
 from sklearn.preprocessing import OneHotEncoder
 from keras.layers import Dense
 from keras import Sequential
+
+from paths.path import dir_path
+
 
 class IrisModel(object):
 
@@ -43,18 +45,10 @@ class IrisModel(object):
         model.fit(X,Y_1hot,epochs=300, batch_size=10)
         print('Model Training is completed')
 
-        file_name = './save/iris_model.h5'
+        file_name = dir_path('iris')+'/save/iris_model.h5'
         model.save(file_name)
         print(f'Model Save in {file_name}')
 
-    def nominal(self):
-        pass
-    def ordinal(self):
-        pass
-    def interval(self):
-        pass
-    def ratio(self):
-        pass
 
 '''
  --- 1.Shape ---

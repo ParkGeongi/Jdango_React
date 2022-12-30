@@ -1,4 +1,8 @@
 import tensorflow as tf
+
+from paths.path import dir_path
+
+
 class NumberModel(object):
     def __init__(self):
         pass
@@ -19,7 +23,7 @@ class NumberModel(object):
         model.fit(x_train, y_train, epochs=5)
         test_loss, test_acc = model.evaluate(x_test, y_test)
         print('테스트 정확도:', test_acc)
-        file_name = './save/number_model.h5'
+        file_name = dir_path('number')+'r/save/number_model.h5'
         model.save(file_name)
         print(f'Model Save in {file_name}')
 

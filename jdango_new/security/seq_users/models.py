@@ -32,9 +32,14 @@ class SeqUser(models.Model):
     # role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=3)
 
     def __str__(self):
-        return f'{self.pk}'
+        return f'{self.pk} {self.user_email} {self.password} {self.user_email} {self.phone} ' \
+               f'{self.birth} {self.address} {self.job} {self.user_interests}{self.token} '
 
     class Meta:
         db_table = "seq_users"
         verbose_name = 'seq_user'
         verbose_name_plural = 'seq_users'
+
+
+
+

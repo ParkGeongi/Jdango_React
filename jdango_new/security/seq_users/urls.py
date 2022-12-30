@@ -4,6 +4,6 @@ from security.seq_users import views
 
 urlpatterns = [
     url(r'seq_users',views.list),
-    url(r'seq-users',views.suser_views),
-    url(r'login',views.login)
+    url(r'seq-users',views.SeqUser_views),
+    url(r'seq_login',views.seqlogin)
 ]
