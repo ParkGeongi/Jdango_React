@@ -19,8 +19,8 @@ const Navigation2 = () => {
         <Link to="/home" style={{width:'auto', margin: 10}}>Home</Link>
         <Link to="/counter" style={{width:'auto', margin:10}}>Counter</Link>
         <Link to="/todos" style={{width:'auto', margin:10}}>Todos</Link>
-        <Link to="/signup" style={{width:95, margin:10}}>Blog Sign up</Link>
-        <Link to="/login" style={{width:'auto', margin:10}}>Login</Link>
+
+
         <Link to="/stroke" style={{width:'auto', margin:10}}>Stroke</Link>
         <Link to="/iris" style={{width:'auto', margin:10}}>Iris</Link>
         <Link to="/fashion" style={{width:'auto', margin:10}}>Fashion</Link>
@@ -31,7 +31,7 @@ const Navigation2 = () => {
         <Link to="/review" style={{width:'auto', margin:10}}>Review</Link>
         <Link to="/sequserlist" style={{width:'auto', margin:10}}>SeqUserList</Link>
         <Link to="/seq-login" style={{width:'auto', margin:10}}>SeqLogin</Link>
-
+        <Link to="/name" style={{width:'auto', margin:10}}>Name</Link>
       </BottomNavigation>
     </Box>
   );

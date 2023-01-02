@@ -2,7 +2,7 @@
 import axios from "axios";
 import { security, server } from "context";
 
-export const postLogin = req => axios.post(`${server}${security}seq_login`, req)
+export const postLogin = req => axios.post(`${server}${security}seq-login`, req)
 
 
 const SecurityService = {
@@ -29,7 +29,7 @@ function handleResponse(response){
 
 
 async function getSuserSignup(){
-    const res = await fetch(`${server}${security}seq_users`)
+    const res = await fetch(`${server}${security}sequser`)
     .then(handleResponse)
     .then(data =>  JSON.stringify(data))
     .catch((error) => {

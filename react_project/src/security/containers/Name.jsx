@@ -1,8 +1,8 @@
 import {useState,useEffect} from 'react'
 import axios from 'axios'
-import SeqUserListForm from 'security/components/SeqUserListForm'
+import NameForm from 'security/components/NameForm'
 
-export default function SeqUserList(){
+export default function Name(){
     const [list,setList] = useState([])
 
     
@@ -10,7 +10,7 @@ export default function SeqUserList(){
     useEffect(()=>{
     
         axios
-        .get('http://localhost:8000/security/list')
+        .get('http://localhost:8000/security/list/name')
         .then(res => {
             setList(res.data)
         })
@@ -21,6 +21,6 @@ export default function SeqUserList(){
 
 
     return <>
-        <SeqUserListForm list={list}/>
+        <NameForm list={list}/>
     </>
 }

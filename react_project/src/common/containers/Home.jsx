@@ -8,7 +8,7 @@ import { Number,Fashion, Iris, Stroke} from "ml"
 import {NaverMovie } from "webcrawler"
 import { BlogSignup } from "blog"
 import { Review, Samsung } from "nlp"
-import { SeqLogin, SeqUsers } from "security"
+import { Name, SeqLogin, SeqUsers } from "security"
 import SeqUserList from "security/containers/SeqUserList"
 
 
@@ -31,8 +31,6 @@ const Home = () => {
          <Routes>   
             <Route path="/counter" element={<Counter/>}></Route>
             <Route path="/todos" element={<Schedule/>}></Route>
-            <Route path="/login" element={<Login/>}></Route>
-            <Route path="/signup" element={<BlogSignup/>}></Route>
             <Route path="/iris" element={<Iris/>}></Route>
             <Route path="/stroke" element={<Stroke/>}></Route>
             <Route path="/fashion" element={<Fashion/>}></Route>
@@ -43,6 +41,7 @@ const Home = () => {
             <Route path="/review" element={<Review/>}></Route>
             <Route path="/sequserlist" element={<SeqUserList/>}></Route>
             <Route path="/seq-login" element={<SeqLogin/>}></Route>
+            <Route path="/name" element={<Name/>}></Route>
         </Routes>
         </td>
         </tr>
