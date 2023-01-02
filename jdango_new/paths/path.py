@@ -50,5 +50,6 @@ def dir_path(param):
         return os.path.join(root, "shop", param)
 
     elif (param == "webcrawler"):
-
         return os.path.join(root, param)
+    elif (param == "aitrader"):
+        return os.path.join(root,'dlearn', param)

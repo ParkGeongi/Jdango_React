@@ -57,3 +57,6 @@ wincertstore==0.2
 dataclasses==0.6
 wordcloud
 icecream
+pandas-datareader == 0.10.0
+yfinance==0.2.3
+prophet== 1.1.1
