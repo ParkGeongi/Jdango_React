@@ -20,3 +20,7 @@ class SeqUserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, valicated_data):
         sequser.objects.filter(pk=instance.id).update(**valicated_data)
+
+
+    def delete(self, instance, valicated_data):
+        pass

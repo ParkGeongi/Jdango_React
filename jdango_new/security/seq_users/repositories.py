@@ -15,21 +15,32 @@ class SeqUserRepository(object):
     def __init__(self):
         pass
 
-    def select_all(self):
-        serializer = SeqUserSerializer(SeqUser.objects.all(), many=True)
-        return Response(serializer.data)
 
+    def get_all(self):
+        return Response(SeqUserSerializer(SeqUser.objects.all(), many=True).data)
+
+    def find_by_id(self,id):
+        return SeqUser.objects.all().filter(susers_id=id).values()[0]
+    
+
+    
     def login(self, **keyargs):
         loginUser = SeqUser.objects.get(user_email=keyargs['user_email'])
-        print(f"해당 email 을 가진  User: {loginUser}")
 
         if loginUser.password == keyargs["password"]:
-            dbUser = SeqUser.objects.all().filter(susers_id=loginUser.susers_id).values()[0]
-            print(f'DBUser is {dbUser}')
+            dbUser = self.find_by_id(loginUser.susers_id)
             serializer = SeqUserSerializer(dbUser, many=False)
             return JsonResponse(data=serializer.data, safe=False)
+        # dictionary이외를 받을 경우, 두번째 argument를 safe=False로 설정해야한다.
         else:
             return JsonResponse({'data': 'PASSWORD WRONG'})
 
+    def find_user_by_email(self, param):
+        return SeqUser.objects.all().filter(user_email=param).values()[0]
 
+    def find_user_by_name(self, param):
+        return SeqUser.objects.all().filter(job=param).values()
+
+    def find_user_by_job(self, param):
+        return SeqUser.objects.all().filter(job=param).values()
 

@@ -7,10 +7,10 @@ from django.db import models
 class Cinemas(models.Model):
     use_in_migration = True
     cinema_id = models.AutoField(primary_key=True)
-    title = models.TextField()
-    image_url = models.TextField()
-    address = models.TextField()
-    detail_address = models.TextField()
+    title = models.CharField(max_length=100)
+    image_url = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    detail_address = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'movie_cinemas'

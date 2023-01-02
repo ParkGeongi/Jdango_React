@@ -3,8 +3,11 @@ from django.urls import re_path as url
 from movie.movies import views
 
 
-urlpatterns = [
-    url(r'fake-images',views.fake_images),
+from django.urls import re_path as url
 
-    url(r'blow-up-face',views.faces_blow_up)
+from movie.movies import views
+
+urlpatterns = [
+    url(r'movie',views.movie),
+    url(r'list',views.movie_list)
 ]

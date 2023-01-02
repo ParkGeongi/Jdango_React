@@ -4,7 +4,7 @@ from django.db import models
 class Category(models.Model):
     use_in_migration = True
     category_id = models.AutoField(primary_key=True)
-    name = models.TextField()
+    name = models.CharField(max_length=100)
 
 
     class Meta:
