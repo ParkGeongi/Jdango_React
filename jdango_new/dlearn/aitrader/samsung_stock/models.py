@@ -7,9 +7,16 @@ from sklearn.preprocessing import StandardScaler
 from paths.path import dir_path
 from keras.layers import Dense, LSTM, concatenate
 from keras.models import Sequential, Model
+from abc import abstractmethod, ABCMeta
 
+class Samsung_Stock_Model(metaclass=ABCMeta):
+    @abstractmethod
+    def split_xy(self, dataset, time_step, y_column):
+        pass
 
-class Samsung_stok(object):
+    @abstractmethod
+    def create(self):
+        pass
     def __init__(self):
         global kospi, samsung,path
         path = dir_path('aitrader')
@@ -42,6 +49,7 @@ class Samsung_stok(object):
                     df2.iloc[i,j] = df2.iloc[i, j].replace(',', '')
                     df2.iloc[i, j] = float(df2.iloc[i, j])
 
+
     def save_npy(self):
         path = dir_path('aitrader')
         df1 = pd.read_csv(f'{path}\\data\\코스피200내역1.csv',index_col=0, header=0, encoding='utf-8', sep=',')
@@ -55,22 +63,22 @@ class Samsung_stok(object):
         df2.replace(np.nan, '0', regex=True, inplace=True)
 
         df1 = df1[df1['거래량'] != '0']
-        df2 = df2[df2['거래량'] != '0']
+        df2 = df2[df2['거래량'] != '0'] #거래량 0인 record 제외
 
         self.normalization(df1)
         self.normalization(df2)
 
-
         df1.sort_values(['날짜'], ascending=[True], inplace=True)
         df2.sort_values(['날짜'], ascending=[True], inplace=True)
-
+        print(df1)
+        print(df2)
         df1 = df1.values
         df2 = df2.values
 
         print(type(df1), type(df2))
         print(df1.shape,df2.shape)
-        np.save(f'{path}\\save\\kospi.npy', arr = df1)
-        np.save(f'{path}\\save\\samsung.npy', arr = df2)
+        #np.save(f'{path}\\save\\kospi.npy', arr = df1)
+        #np.save(f'{path}\\save\\samsung.npy', arr = df2)
 
     def split_xy5(self, dataset, time_step, y_column):
         x,y = list(), list()
@@ -85,25 +93,34 @@ class Samsung_stok(object):
             y.append(tmp_y)
         return np.array(x), np.array(y)
 
-    def DNN_scaled(self):
-        x, y = self.split_xy5(samsung, 5, 1)
+    def DNN_scaled(self,npy):
+        x, y = self.split_xy5(npy, 5, 1)
+        print(x.shape)
+        print(y.shape)
         x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1, test_size=0.3)
+        print(type(x_train))
+        print(x_train.shape)
+        print(f'하나 #######################{x_train[0]}')
         x_train = np.reshape(x_train, (x_train.shape[0],x_train.shape[1] * x_train.shape[2])).astype(float)
         x_test = np.reshape(x_test, (x_test.shape[0],x_test.shape[1] * x_test.shape[2])).astype(float)
+        print(f'둘 #######################{x_train[0]}')
         y_train = y_train.astype(float)
         y_test= y_test.astype(float)
         scalar = StandardScaler()
         scalar.fit(x_train)
         x_train_scaled = scalar.transform(x_train)
         x_test_scaled = scalar.transform(x_test)
+        print(x_train_scaled.shape)
+
         return x_train, x_test, y_train, y_test, x_train_scaled, x_test_scaled
 
-    def LSTM_scaled(self):
-        x, y = self.split_xy5(samsung, 5, 1)
+    def LSTM_scaled(self,npy):
+        x, y = self.split_xy5(npy, 5, 1)
         print(x.shape)  # (468, 5, 5)
         print(y.shape)  # (468, 1)
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1, test_size=0.3)
+
         print(x_train.shape)  # (327, 5, 5)
         print(x_test.shape)  # (141, 5, 5)
         print(y_train.shape)  # (327, 1)
@@ -119,8 +136,10 @@ class Samsung_stok(object):
         x_test_scaled = scalar.transform(x_test)
         print(x_train_scaled[0, :])
         print(x_test_scaled.shape)
+        print(y_train.shape)
         x_train_scaled = np.reshape(x_train_scaled, (x_train_scaled.shape[0], 5, 5))
         x_test_scaled = np.reshape(x_test_scaled, (x_test_scaled.shape[0], 5, 5))
+
         return x_train, x_test, y_train, y_test, x_train_scaled, x_test_scaled
 
     def DNN(self):
@@ -179,8 +198,8 @@ class Samsung_stok(object):
             print(f'종가 : {y_test[i]}, 예측가 : {y_pred[i]}')
 
     def DNN_Ensemble(self):
-        x_train, x_test, y_train, y_test, x_train_scaled, x_test_scaled = self.DNN_scaled()
-        x2_train, x2_test, y2_train, y2_test, x2_train_scaled, x2_test_scaled = self.DNN_scaled()
+        x_train, x_test, y_train, y_test, x_train_scaled, x_test_scaled = self.DNN_scaled(samsung)
+        x2_train, x2_test, y2_train, y2_test, x2_train_scaled, x2_test_scaled = self.DNN_scaled(kospi)
         input1 = Input(shape=(25,))
         dense1 = Dense(64)(input1)
         dense1 = Dense(32)(dense1)
@@ -215,8 +234,8 @@ class Samsung_stok(object):
             print(f'종가 : {y_test[i]}, 예측가 : {y_pred[i]}')
 
     def LSTM_Ensemble(self):
-        x_train, x_test, y_train, y_test, x_train_scaled, x_test_scaled = self.LSTM_scaled()
-        x2_train, x2_test, y2_train, y2_test, x2_train_scaled, x2_test_scaled = self.LSTM_scaled()
+        x_train, x_test, y_train, y_test, x_train_scaled, x_test_scaled = self.LSTM_scaled(samsung)
+        x2_train, x2_test, y2_train, y2_test, x2_train_scaled, x2_test_scaled = self.LSTM_scaled(kospi)
 
         input1 = Input(shape=(5,5))
         dense1 = LSTM(64)(input1)
@@ -252,5 +271,5 @@ class Samsung_stok(object):
 
 if __name__ == '__main__':
 
-    s = Samsung_stok()
-    s.hook()
+    s = Samsung_Stock_Model()
+    s.DNN_Ensemble()
