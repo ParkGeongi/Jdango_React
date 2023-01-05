@@ -14,10 +14,9 @@ from dlearn.aitrader.samsung_stock.services import Samsung_Stock_Service
 @parser_classes([JSONParser])
 def Samsung_stock(request):
 
-    da = request.GET['date']
-    print(da)
+    start_day = request.GET['date']
+    stock, pred_day = Samsung_Stock_Service().DNN_predict(start_day)
+    a = [{'future': stock,'start_day':start_day,'pred_day':pred_day}]
 
-    s = Samsung_Stock_Service().hook()
-    return JsonResponse({'data': s})
-
+    return JsonResponse({'result': a})
 

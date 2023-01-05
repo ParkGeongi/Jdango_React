@@ -3,7 +3,7 @@ import random
 import pandas as pd
 from sqlalchemy import create_engine
 
-from basic import lambdas
+from basic.lambdas import cre_lambdas
 
 
 class SeqUserService(object):
@@ -35,10 +35,10 @@ class SeqUserService(object):
 
 
 
-        data =[{'user_email':lambdas.lambda_string(3) + '@naver.com','password':'1',
-                'user_name':lambdas.lambda_k(2), 'phone':lambdas.lambda_phone(4),'birth':lambdas.lambda_birth(1985, 2011),
-                'address':  random.choice(lambdas.address_list),'job':random.choice(lambdas.job_list),
-                'user_interests':random.choice(lambdas.interests_list),'token':'JWT fefege..'}
+        data =[{'user_email':cre_lambdas.lambda_string(3) + '@naver.com','password':'1',
+                'user_name':cre_lambdas.lambda_k(2), 'phone':cre_lambdas.lambda_phone(4),'birth':cre_lambdas.lambda_birth(1985, 2011),
+                'address':  random.choice(cre_lambdas.address_list),'job':random.choice(cre_lambdas.job_list),
+                'user_interests':random.choice(cre_lambdas.interests_list),'token':'JWT fefege..'}
                for i in range(100)]
 
         print(data)
