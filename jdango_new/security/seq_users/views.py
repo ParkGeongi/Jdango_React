@@ -63,7 +63,7 @@ def list_by_name(request):
 
 @api_view(["GET"])
 @parser_classes([JSONParser])
-def list_by_name(request):
+def list_by_job(request):
     return Response(SeqUserRepository().find_user_by_name(request.data["job"]))
 
 @api_view(["GET"])

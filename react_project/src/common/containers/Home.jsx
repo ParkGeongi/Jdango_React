@@ -10,6 +10,7 @@ import { BlogSignup } from "blog"
 import { Review, Samsung } from "nlp"
 import { Name, SeqLogin, SeqUsers } from "security"
 import SeqUserList from "security/containers/SeqUserList"
+import { Samsung_Stock } from "dlearn"
 
 
 const Home = () => {
@@ -42,6 +43,7 @@ const Home = () => {
             <Route path="/sequserlist" element={<SeqUserList/>}></Route>
             <Route path="/seq-login" element={<SeqLogin/>}></Route>
             <Route path="/name" element={<Name/>}></Route>
+            <Route path="/samsung-stock" element={<Samsung_Stock/>}></Route>
         </Routes>
         </td>
         </tr>

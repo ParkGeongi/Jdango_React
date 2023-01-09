@@ -18,11 +18,14 @@ class Samsung_Stock_Service(object):
 
 
     def __init__(self):
-        global path, DNN, LSTM
+        global path, DNN, LSTM, samsung, kospi, DNN_E, LSTM_E
         path = dir_path('aitrader')
         DNN = load_model(f'{path}\\save\\DNN.h5')
         LSTM = load_model(f'{path}\\save\\LSTM.h5')
-
+        DNN_E = load_model(f'{path}\\save\\DNN_Ensemble.h5')
+        LSTM_E = load_model(f'{path}\\save\\LSTM_Ensemble.h5')
+        samsung = 'samsung_test'
+        kospi = 'kospi_test'
     def hook(self):
         return 'a'
 
@@ -52,18 +55,6 @@ class Samsung_Stock_Service(object):
                         df2.iloc[i,j] = df2.iloc[i, j].replace(',', '')
                         df2.iloc[i, j] = float(df2.iloc[i, j])
 
-    def preprocessing(self):
-        path = dir_path('aitrader')
-        df1 = pd.read_csv(f'{path}\\data\\test2.csv',header=0, encoding='utf-8', sep=',')
-        del df1['변동 %']
-        df1 = df1.astype('str')
-        df1 = df1.replace(np.nan, '0', regex=True)
-        df1['날짜'] = df1['날짜'].replace(" ", '')
-        df1['거래량'] = df1['거래량'].replace("", '0')
-        df1 = df1[df1['거래량'] != '0']
-        self.normalization(df1)
-        df1.sort_values(['날짜'], ascending=[True], inplace=True)
-        return df1
 
 
     def df_to_npy(self,df):
@@ -130,13 +121,30 @@ class Samsung_Stock_Service(object):
         df2 = df2.head(5)
 
         return df2
+    def preprocessing(self,file_name):
+
+        df1 = pd.read_csv(f'{path}\\data\\{file_name}.csv',header=0, encoding='utf-8', sep=',')
+        del df1['변동 %']
+        df1 = df1.dropna(axis=0)
+        df1 = df1.astype(str)
+        df1 = df1.replace(np.nan, '0')
+
+        df1['날짜'] = df1['날짜'].replace(" ", '')
+        df1['거래량'] = df1['거래량'].replace("", '0')
+        df1 = df1[df1['거래량'] != '0']
+        self.normalization(df1)
+        df1.sort_values(['날짜'], ascending=[True], inplace=True)
+        return df1
+
+
+
 
     def scaling(self,start_day):
-        df = self.preprocessing()
+        df = self.preprocessing(samsung)
         ls = list(df['날짜'])
         idx = pd.to_datetime(ls)
 
-        df1 = self.preprocessing()
+        df1 = self.preprocessing(samsung)
         npy = self.df_to_npy(df1)
         npy = np.array(npy).astype(float)
         std_data = (npy - np.mean(npy, axis=0)) / np.std(npy, axis=0)
@@ -149,10 +157,6 @@ class Samsung_Stock_Service(object):
 
         date = ls[-1].date()
         #start = ls[0].date().weekday()
-
-
-
-
         if date.weekday() == 4:
             future_day = date + timedelta(days=3)
         else:
@@ -160,38 +164,82 @@ class Samsung_Stock_Service(object):
 
         return df2, str(future_day)
 
-    def DNN_predict(self,start_day):
+    def kospi_scaling(self,start_day):
+        df = self.preprocessing(kospi)
+        ls = list(df['날짜'])
+        idx = pd.to_datetime(ls)
 
-        #start_day_date = datetime.strptime(start_day, '%Y-%m-%d').date()
-        #pred_day = start_day_date + timedelta(days=5)
-        #pred_day = str(pred_day)
+        df1 = self.preprocessing(kospi)
+        npy = self.df_to_npy(df1)
+        npy = np.array(npy).astype(float)
+        std_data = (npy - np.mean(npy, axis=0)) / np.std(npy, axis=0)
 
+        df2 = pd.DataFrame(std_data, index=idx, columns=['종가', '오픈', '고가', '저가', '거래량'])
+        df2 = df2[start_day:]
+        df2 = df2.head(5)
+
+        return df2
+
+    def pre2(self, start_day):
         df, future_day = self.scaling(start_day)
         print(df)
         x_scaled = np.array(df.values).astype(float)
         x_scaled = np.concatenate(x_scaled)
         x_scaled = np.expand_dims(x_scaled, axis=0)
         print(x_scaled)
+        return future_day, x_scaled
+
+    def pre3(self, start_day):
+        df = self.kospi_scaling(start_day)
+        print(df)
+        x_scaled = np.array(df.values).astype(float)
+        x_scaled = np.concatenate(x_scaled)
+        x_scaled = np.expand_dims(x_scaled, axis=0)
+        print(x_scaled)
+        return x_scaled
+
+    def DNN_predict(self,start_day):
+
+        #start_day_date = datetime.strptime(start_day, '%Y-%m-%d').date()
+        #pred_day = start_day_date + timedelta(days=5)
+        #pred_day = str(pred_day)
+
+        future_day, x_scaled = self.pre2(start_day)
         y_pred = DNN.predict(x_scaled)
         print(y_pred[0][0])
         print(future_day)
         return str(y_pred[0][0]), future_day
 
+
     def LSTM_predict(self,start_day):
-        start_day_date = datetime.strptime(start_day, '%Y-%m-%d').date()
-        pred_day = start_day_date + timedelta(days=5)
-        pred_day = str(pred_day)
-
-        df = self.scaling(start_day)
-        print(df)
-        x_scaled = np.array(df.values).astype(float)
-
-        x_scaled = np.expand_dims(x_scaled, axis=0)
+        future_day, x_scaled = self.pre2(start_day)
+        x_scaled = np.reshape(x_scaled, (x_scaled.shape[0], 5, 5))
         print(x_scaled)
         y_pred = LSTM.predict(x_scaled)
         print(y_pred[0][0])
+        print(future_day)
+        return str(y_pred[0][0]), future_day
+    def DNN_Ensemble_pred(self,start_day):
+        future_day, x_scaled = self.pre2(start_day)
+        kospi_scaled = self.pre3(start_day)
 
-        return str(y_pred[0][0]), pred_day
+        y_pred = DNN_E.predict([x_scaled,kospi_scaled])
+
+        print(y_pred[0][0])
+        print(future_day)
+        return str(y_pred[0][0]), future_day
+    def LSTM_Ensemble_pred(self,start_day):
+        future_day, x_scaled = self.pre2(start_day)
+        x_scaled = np.reshape(x_scaled, (x_scaled.shape[0], 5, 5))
+        kospi_scaled = self.pre3(start_day)
+        kospi_scaled = np.reshape(kospi_scaled, (x_scaled.shape[0], 5, 5))
+
+
+        y_pred = LSTM_E.predict([x_scaled,kospi_scaled])
+        print(y_pred[0][0])
+        print(future_day)
+        return str(y_pred[0][0]), future_day
+
 # 5일 동안의   종가      오픈      고가      저가      거래량을 토대로 6일 째 종가를 예측하는 모델
    # x = [[70200.0, 71600.0, 71600.0, 70200.0, 12610000.0],
     #     [70600.0, 70300.0, 70600.0, 69800.0, 590.0],
@@ -201,6 +249,6 @@ class Samsung_Stock_Service(object):
 
 
 if __name__ == '__main__':
-    start_day='2022-12-13'
+    start_day='2022-9-16'
     s = Samsung_Stock_Service()
-    s.DNN_predict(start_day)
+    s.LSTM_Ensemble_pred(start_day)

@@ -15,8 +15,13 @@ from dlearn.aitrader.samsung_stock.services import Samsung_Stock_Service
 def Samsung_stock(request):
 
     start_day = request.GET['date']
-    stock, pred_day = Samsung_Stock_Service().DNN_predict(start_day)
-    a = [{'future': stock,'start_day':start_day,'pred_day':pred_day}]
+    stock_DNN, pred_day = Samsung_Stock_Service().DNN_predict(start_day)
+    stock_LSTM, pred_day = Samsung_Stock_Service().LSTM_predict(start_day)
+    stock_DNN_Ensemble, pred_day = Samsung_Stock_Service().DNN_Ensemble_pred(start_day)
+    stock_LSTM_Ensemble, pred_day = Samsung_Stock_Service().LSTM_Ensemble_pred(start_day)
+
+    a = [{'stock_DNN': stock_DNN,'stock_LSTM':stock_LSTM,'stock_DNN_Ensemble':stock_DNN_Ensemble
+             ,'stock_LSTM_Ensemble':stock_LSTM_Ensemble,'start_day':start_day,'pred_day':pred_day}]
 
     return JsonResponse({'result': a})
 

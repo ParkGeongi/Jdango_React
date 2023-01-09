@@ -32,6 +32,7 @@ const Navigation2 = () => {
         <Link to="/sequserlist" style={{width:'auto', margin:10}}>SeqUserList</Link>
         <Link to="/seq-login" style={{width:'auto', margin:10}}>SeqLogin</Link>
         <Link to="/name" style={{width:'auto', margin:10}}>Name</Link>
+        <Link to="/samsung-stock" style={{width:'auto', margin:10}}>Samsung_Stock</Link>
       </BottomNavigation>
     </Box>
   );

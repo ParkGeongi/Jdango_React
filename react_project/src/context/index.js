@@ -4,3 +4,4 @@ export const webcrawler = "webcrawler/"
 export const blog = 'blog/'
 export const nlp = 'nlp/'
 export const security = 'security/'
+export const dlearn = 'dlearn/'
