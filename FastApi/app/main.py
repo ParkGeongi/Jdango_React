@@ -1,23 +1,26 @@
 import os
 import sys
 from fastapi import FastAPI, APIRouter
+from fastapi_sqlalchemy import DBSessionMiddleware
 
-from app.models.user import User, engineconn
+from app.models.user import User
 from app.routers.user import router as user_router
+from app.routers.posts import router as post_router
+from app.utils.env import DB_URL
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 baseurl = os.path.dirname(os.path.abspath(__file__))
 
 router =APIRouter()
 router.include_router(user_router, prefix="/users",tags=["users"])
+router.include_router(post_router, prefix="/posts",tags=["posts"])
 app = FastAPI()
 app.include_router(router)
-
+app.add_middleware(DBSessionMiddleware, db_url=DB_URL)
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
-
 
 @app.get("/hello/{name}")
 async def say_hello(name: str):
@@ -26,7 +29,6 @@ async def say_hello(name: str):
 @app.post("/security/sequser")
 async def login(user: User):
     print(f"리액트에서 넘긴 정보 : {user.get_email()} {user.get_password()}")
-
 
 
 

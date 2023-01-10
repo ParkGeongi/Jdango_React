@@ -1,9 +1,11 @@
 from pydantic import BaseModel, BaseConfig
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.future import create_engine
-from sqlalchemy.orm import Session, relationship, declarative_base, sessionmaker
+from sqlalchemy.orm import Session, relationship, sessionmaker
+from app.utils.database import Base
 
-Base = declarative_base()
+
+
 class User(Base):
     __tablename__ = 'users'
     users_id = Column(primary_key=True)
@@ -22,21 +24,6 @@ class User(Base):
         allow_population_by_field_name = True
 
 
-class engineconn:
-
-    def __init__(self):
-        self.engine = create_engine("mysql+pymysql://root:root@host.docker.internal:3306/mydb",future=True)
-
-    def sessionmaker(self):
-        Session = sessionmaker(bind=self.engine)
-        session = Session()
-        session.close()
-        return session
-
-    def connection(self):
-        conn = self.engine.connect()
-        conn.close()
-        return conn
 
 
 
