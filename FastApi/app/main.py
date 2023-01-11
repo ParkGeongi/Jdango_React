@@ -2,22 +2,32 @@ import os
 import sys
 from fastapi import FastAPI, APIRouter
 from fastapi_sqlalchemy import DBSessionMiddleware
-
 from app.models.user import User
 from app.routers.user import router as user_router
-from app.routers.posts import router as post_router
+from app.routers.article import router as post_router
+from app.utils.database import init_db
 from app.utils.env import DB_URL
+import logging
+
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 baseurl = os.path.dirname(os.path.abspath(__file__))
 
-router =APIRouter()
-router.include_router(user_router, prefix="/users",tags=["users"])
-router.include_router(post_router, prefix="/posts",tags=["posts"])
+router = APIRouter()
+router.include_router(user_router, prefix="/user",tags=["users"])
+router.include_router(post_router, prefix="/article",tags=["articles"])
+
 app = FastAPI()
 app.include_router(router)
 app.add_middleware(DBSessionMiddleware, db_url=DB_URL)
 
+logging.basicConfig()
+logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
+#Base.query = db_session.query_property()
+# Dependency
+@app.on_event('startup')
+async def on_startup():
+    await init_db()
 @app.get("/")
 async def root():
     return {"message": "Hello World"}

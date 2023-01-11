@@ -3,4 +3,6 @@ sqlalchemy
 uvicorn
 fastapi
 pymysql
-fastapi_sqlalchemy
+fastapi-sqlalchemy
+sqlalchemy-utils
+sshtunnel

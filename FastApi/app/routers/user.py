@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 import app.repositories.user as dao
 from sqlalchemy.orm import Session
 
-from app.models.user import User
+from app.schemas.user import User
 from app.utils.database import get_db
 
 router = APIRouter()
@@ -42,7 +42,7 @@ async def get_user(id : str,db: Session = Depends(get_db)):
     dao.find_user(id=id,db=db)
     return {"data": "sucess"}
 
-@router.get("/job/{search}/{no}")
+@router.get("/job/{search}/{page}")
 async def get_users_by_job(search: str, page: int, db: Session = Depends(get_db)):
     dao.find_users_by_job(search,page,db)
     return {"data":"sucess"}

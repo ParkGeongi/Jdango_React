@@ -1,22 +1,20 @@
-import pymysql
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from app.utils.env import DB_USER, DB_PASSWORD, DB_HOST, PORT, DB_NAME, DB_URL, CHARSET
 
-Base = declarative_base()
 
-engine = create_engine(DB_URL, echo=True)
-
-pymysql.install_as_MySQLdb()
-conn = pymysql.connect(host=DB_HOST, port=PORT, user=DB_USER, password=DB_PASSWORD, db=DB_NAME, charset=CHARSET)
-
+engine = create_engine(DB_URL, echo=True, pool_pre_ping=True)
 SessionLocal = scoped_session(
     sessionmaker(autocommit = False, autoflush=False, bind=engine)
 )
+Base = declarative_base()
+engine = create_engine(DB_URL, echo=True, pool_pre_ping=True)
 Base.query = SessionLocal.query_property()
 
-def get_db():
+
+async def get_db():
     global db
     try:
         db = SessionLocal()
@@ -24,7 +22,15 @@ def get_db():
     finally:
         db.close()
 
-
+async def init_db():
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        raise e
+'''
+pymysql.install_as_MySQLdb()
+conn = pymysql.connect(host=DB_HOST, port=PORT, user=DB_USER, password=DB_PASSWORD, db=DB_NAME, charset=CHARSET)
+'''
 '''
 class engineconn(object):
 

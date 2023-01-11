@@ -4,14 +4,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.future import create_engine
 from sqlalchemy.orm import Session, relationship, sessionmaker
 from sqlalchemy_utils import UUIDType
-
 from app.models.mixins import TimstampMixin
 from app.utils.database import engine, Base
 
-Base.metadata.create_all(bind=engine)
+
 class Article(Base, TimstampMixin):
     __tablename__ = 'articles'
-    art_seq = Column(Integer,primary_key=True, autoincreament=True)
+    art_seq = Column(Integer,primary_key=True, autoincrement=True)
     title = Column(String(100))
     content = Column(String(1000))
     users_id = Column(UUIDType(binary=False), ForeignKey('users.user_id'), nullable=True)

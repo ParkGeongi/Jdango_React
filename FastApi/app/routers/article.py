@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
-import app.repositories.articles as dao
+import app.repositories.article as dao
 from sqlalchemy.orm import Session
 
-from app.models.articles import Article
+from app.schemas.article import Article
 from app.utils.database import get_db
 
 router = APIRouter()
@@ -16,14 +16,14 @@ async def wrtie(item: Article, db: Session = Depends(get_db)):
     return {"data":"sucess"}
 
 
-@router.put("/{seq}")
-async def update(seq:str,item: Article, db: Session = Depends(get_db)):
-    dao.update(id=seq,item=item,db=db)
+@router.put("/{id}")
+async def update(id:str,item: Article, db: Session = Depends(get_db)):
+    dao.update(id=id,item=item,db=db)
     return {"data":"sucess"}
 
-@router.delete("/{seq}")
-async def delete(seq:str,user: Article, db: Session = Depends(get_db)):
-    dao.delte(id=seq,item=user,db=db)
+@router.delete("/{id}")
+async def delete(id:str,user: Article, db: Session = Depends(get_db)):
+    dao.delte(id=id,item=user,db=db)
     return {"data":"sucess"}
 
 ## Q
@@ -32,12 +32,12 @@ async def get_articles(page, db: Session = Depends(get_db)):
     ls = dao.find_articles(page,db)
     return {"data": ls}
 
-@router.get("/email/{seq}")
-async def get_article(seq : str,db: Session = Depends(get_db)):
-    dao.find_article(id=seq,db=db)
+@router.get("/email/{id}")
+async def get_article(id : str,db: Session = Depends(get_db)):
+    dao.find_article(id=id,db=db)
     return {"data": "sucess"}
 
-@router.get("/job/{search}/{no}")
+@router.get("/job/{search}/{page}")
 async def get_article_by_title(search: str, page: int, db: Session = Depends(get_db)):
     dao.find_article_by_title(search,page,db)
     return {"data":"sucess"}

@@ -1,7 +1,7 @@
 DB_USER = "root"
 DB_PASSWORD = "root"
-DB_HOST = "172.17.0.1"
-#host.docker.internal
+DB_HOST =  "host.docker.internal"
+#host.docker.internal "172.17.0.1"
 DB_NAME = "mydb"
 PORT = 3306
 CHARSET = "utf8"
