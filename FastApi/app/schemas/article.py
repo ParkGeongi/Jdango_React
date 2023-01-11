@@ -3,8 +3,9 @@ from typing import List
 from pydantic import BaseModel
 
 
+
 class Article(BaseModel):
-    post_id : int
+    art_seq : int
     title : str
     content : str
     create_at : str

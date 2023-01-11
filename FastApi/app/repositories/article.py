@@ -1,4 +1,4 @@
-from app.models.posts import Article
+from app.models.articles import Article
 
 from sqlalchemy.orm import Session
 
