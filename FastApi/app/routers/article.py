@@ -3,7 +3,7 @@ import app.repositories.article as dao
 from sqlalchemy.orm import Session
 
 from app.schemas.article import Article
-from app.utils.database import get_db
+from app.database import get_db
 
 router = APIRouter()
 

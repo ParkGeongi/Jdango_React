@@ -2,22 +2,33 @@ import os
 import sys
 from fastapi import FastAPI, APIRouter
 from fastapi_sqlalchemy import DBSessionMiddleware
+from starlette.middleware.cors import CORSMiddleware
+
+from app.admin.utils import current_time
 from app.models.user import User
 from app.routers.user import router as user_router
 from app.routers.article import router as post_router
-from app.utils.database import init_db
-from app.utils.env import DB_URL
+from app.database import init_db
+from app.env import DB_URL
 import logging
-
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 baseurl = os.path.dirname(os.path.abspath(__file__))
+print(f" ################ app.main Started At {current_time()} ################# ")
 
 router = APIRouter()
-router.include_router(user_router, prefix="/user",tags=["users"])
-router.include_router(post_router, prefix="/article",tags=["articles"])
+router.include_router(user_router, prefix="/users",tags=["users"])
+router.include_router(post_router, prefix="/articles",tags=["articles"])
 
 app = FastAPI()
+origins = ["http://localhost:3000"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(router)
 app.add_middleware(DBSessionMiddleware, db_url=DB_URL)
 
@@ -36,9 +47,6 @@ async def root():
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
 
-@app.post("/security/sequser")
-async def login(user: User):
-    print(f"리액트에서 넘긴 정보 : {user.get_email()} {user.get_password()}")
 
 
 

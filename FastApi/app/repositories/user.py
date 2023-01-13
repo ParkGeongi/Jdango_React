@@ -1,25 +1,35 @@
-import pymysql
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.user import User
-from app.utils.env import DB_USER, DB_PASSWORD, DB_HOST, PORT, DB_NAME
-
-
-
+from app.schemas.user import UserDTO
 
 
 def find_users(page,db: Session):
     print(f"page number is {page}")
-    return db.query(User).all()
+    return db.query(UserDTO).all()
 
 
 
-def join(item, db):
-    return None
+def join(userDTO: UserDTO, db: Session)->str:
+    user = User(**userDTO.dict())
+    db.add(user)
+    db.commit()
+    return "success"
 
 
-def login(id, item, db):
-    return None
+def login(userDTO: UserDTO, db: Session):
+    user = User(**userDTO.dict())
+    #db_user = user.select().where(user.colums.useremail == 'lgv@naver.com')
+    # db.query(db_user.exists())
+    db_user = db.scalars(select(User).where(User.user_email==user.user_email)).first()
+    print(f" dbUser {db_user}")
+    if db_user is not None:
+        if db_user.password == user.password:
+            return db_user
+    else:
+        print("해당 이메일이 없습니다.")
+        return "failure"
 
 
 def update(id, item, db):

@@ -1,14 +1,14 @@
 from uuid import uuid4
 
-from pydantic import BaseModel, BaseConfig
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from pydantic import BaseConfig
+from sqlalchemy import Column, String
 
-from sqlalchemy.orm import Session, relationship, sessionmaker
+from sqlalchemy.orm import relationship
 
 from app.models.mixins import TimstampMixin
-from app.utils.database import engine, Base
+from app.database import Base
 from sqlalchemy_utils import UUIDType
-
+import sqlalchemy as sa
 
 class User(Base,TimstampMixin):
     __tablename__ = 'users'

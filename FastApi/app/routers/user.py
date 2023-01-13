@@ -2,24 +2,30 @@ from fastapi import APIRouter, Depends
 import app.repositories.user as dao
 from sqlalchemy.orm import Session
 
-from app.schemas.user import User
-from app.utils.database import get_db
+from app.admin.utils import current_time
+from app.models.user import User
+from app.schemas.user import UserDTO
+from app.database import get_db
 
 router = APIRouter()
 
 
 ## C
-@router.post("/")
-async  def join(item: User, db: Session = Depends(get_db)):
-    user_dict = item.dict()
-    print((f"SignUp Inform : {user_dict}"))
-    dao.join(item=item,db=db)
-    return {"data":"sucess"}
+@router.post("/join")
+async def join(user: UserDTO, db: Session = Depends(get_db)):
+    print(f" 회원가입에 진입한 시간: {current_time()} ")
+    print(f"SignUp Inform : {user}")
+    result = dao.join(user, db)
+    if result =="":
+        result = "failure"
+    return {"data": result}
 
-@router.post("/{id}")
-async def login(id:str,item:User, db: Session = Depends(get_db)):
-    dao.login(id, item, db)
-    return {"data": "success"}
+@router.post("/login")
+async def login(user:UserDTO ,db: Session = Depends(get_db)):
+
+    return_user = dao.login(user, db)
+    print(f"로그인 정보 : {return_user}")
+    return {"data": return_user}
 
 @router.put("/{id}")
 async def update(id:str,item: User, db: Session = Depends(get_db)):

@@ -1,11 +1,9 @@
-from pydantic import BaseModel, BaseConfig
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.future import create_engine
-from sqlalchemy.orm import Session, relationship, sessionmaker
+from pydantic import BaseConfig
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType
 from app.models.mixins import TimstampMixin
-from app.utils.database import engine, Base
+from app.database import Base
 
 
 class Article(Base, TimstampMixin):
