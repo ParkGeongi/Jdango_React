@@ -13,7 +13,7 @@ export function* watchJoin(){
         try{
             const response: any = user.join(action.payload)
             put(joinSuccess(response.payload))
-            window.location.href = '/'
+            window.location.href = '/user/login'
         }catch(error){
             put(userAction.joinFailure(error))
         }

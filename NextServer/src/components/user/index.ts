@@ -9,4 +9,4 @@ export {default as Login} from './Login'
 export {default as Logout} from "./Logout"
 export {default as Remove} from './Remove'
 export {default as Update} from './Update'
-export {default as LoginHome} from './LoginHome'
+export {default as LoginHome} from '../loginHome/LoginHome'

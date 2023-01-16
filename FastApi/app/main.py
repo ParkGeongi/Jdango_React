@@ -1,7 +1,8 @@
 import os
 import sys
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Depends, HTTPException
 from fastapi_sqlalchemy import DBSessionMiddleware
+
 from starlette.middleware.cors import CORSMiddleware
 
 from app.admin.utils import current_time
@@ -11,6 +12,9 @@ from app.routers.article import router as post_router
 from app.database import init_db
 from app.env import DB_URL
 import logging
+from fastapi.security import APIKeyHeader
+API_TOKEN = 'SECRET_API_TOKEN'
+api_key_header = APIKeyHeader(name="Token")
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 baseurl = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +40,14 @@ logging.basicConfig()
 logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 #Base.query = db_session.query_property()
 # Dependency
+
+
+@app.get("/progected-router")
+async def protected_route(token: str = Depends(api_key_header)):
+    if token !=API_TOKEN:
+        raise HTTPException(status_code=403)
+    return{"잘못된":  "경로입니다."}
+
 @app.on_event('startup')
 async def on_startup():
     await init_db()

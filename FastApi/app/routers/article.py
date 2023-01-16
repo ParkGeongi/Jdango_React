@@ -1,43 +1,21 @@
 from fastapi import APIRouter, Depends
-import app.repositories.article as dao
+
 from sqlalchemy.orm import Session
 
-from app.schemas.article import Article
+from app.cruds.article import ArticleCrud
+from app.schemas.article import ArticleDTO
 from app.database import get_db
 
 router = APIRouter()
 
 
-@router.post("/")
-async def wrtie(item: Article, db: Session = Depends(get_db)):
-    article_dict = item.dict()
-    print((f"SignUp Inform : {article_dict}"))
-    dao.join(item=item,db=db)
-    return {"data":"sucess"}
+@router.post("/write")
+async def wrtie(dto: ArticleDTO, db: Session = Depends(get_db)):
+    article_crud = ArticleCrud(db)
+    d = article_crud.add_article(dto)
+    if d == 'success':
+        result = {'data': d}
+    else:
+        result = {'data':'fail'}
+    return result
 
-
-@router.put("/{id}")
-async def update(id:str,item: Article, db: Session = Depends(get_db)):
-    dao.update(id=id,item=item,db=db)
-    return {"data":"sucess"}
-
-@router.delete("/{id}")
-async def delete(id:str,user: Article, db: Session = Depends(get_db)):
-    dao.delte(id=id,item=user,db=db)
-    return {"data":"sucess"}
-
-## Q
-@router.get("/{page}")
-async def get_articles(page, db: Session = Depends(get_db)):
-    ls = dao.find_articles(page,db)
-    return {"data": ls}
-
-@router.get("/email/{id}")
-async def get_article(id : str,db: Session = Depends(get_db)):
-    dao.find_article(id=id,db=db)
-    return {"data": "sucess"}
-
-@router.get("/job/{search}/{page}")
-async def get_article_by_title(search: str, page: int, db: Session = Depends(get_db)):
-    dao.find_article_by_title(search,page,db)
-    return {"data":"sucess"}
