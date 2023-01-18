@@ -15,7 +15,7 @@ export const user = {
                 if(response.data === "success"){
                     alert(' 결과: API 내부 join 성공  '+ JSON.stringify(response.data))
                 }else{
-                    alert(` 결과: ${JSON.stringify(response.data.msg)}`)
+                    alert(` 결과: ${response.data.msg}`)
                 }
                 
                 return response
@@ -27,8 +27,9 @@ export const user = {
         try{
             const response : AxiosResponse<any, User[]> =
             await author.post('/users/login', payload)
-            alert(` 서버에서 리턴받은 값: ${JSON.stringify(response.data.email)}`)
-            localStorage.setItem("email", response.data.email)
+            alert(`3 API payload is ${JSON.stringify(response.data)}`)
+            localStorage.clear()
+            localStorage.setItem("session", JSON.stringify(response.data))
             return response.data
         }catch(err){
             return err;

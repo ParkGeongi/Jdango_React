@@ -3,6 +3,7 @@ import {  writeRequest } from "@/modules/slices"
 import { SubmitHandler, useForm} from "react-hook-form"
 import { Article } from "@/modules/types";
 import { useRef } from "react"
+import styled from "styled-components";
 
 export default function Add() {
     const dispatch = useDispatch()
@@ -16,7 +17,7 @@ export default function Add() {
    return(<>
     <form onSubmit={handleSubmit(onSubmit)} method="post">
     <label htmlFor="title">타이틀 :</label>
-          <input 
+      <Input 
           {...register("title", { 
             
             maxLength: {
@@ -27,7 +28,7 @@ export default function Add() {
           type="text" id="title" name="title" /> <br/>
 
     <label htmlFor="content">내용 :</label>
-              <input 
+              <Input 
               {...register("content", { 
                 
                 maxLength: {
@@ -38,6 +39,7 @@ export default function Add() {
               type="text" id="content" name="content" /> <br/>
   
   <label htmlFor="userid">아아디 :</label>
+
               <input 
               {...register("userid", { 
                 
@@ -47,7 +49,7 @@ export default function Add() {
                 }
             })}
               type="text" id="userid" name="userid" /> <br/>
-  
+
       <button type="submit" >전송</button>
 
 
@@ -55,3 +57,6 @@ export default function Add() {
     
     </>)
 }
+const Input = styled.input`
+width: 100%
+`

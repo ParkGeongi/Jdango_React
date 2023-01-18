@@ -16,7 +16,6 @@ const LoginPage: NextPage = function(){
     }
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-   
         dispatch(loginRequest(loginInfo))
     }
     return (

@@ -13,3 +13,7 @@ export interface User{
     created? : string,
     modified? : string
 }
+export interface UserLoginInput{
+    email:string,
+    password: string
+}

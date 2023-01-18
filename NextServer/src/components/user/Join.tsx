@@ -3,7 +3,7 @@ import { User } from "@/modules/types"
 import { useRef } from "react"
 import { useDispatch } from "react-redux"
 import { joinRequest } from "@/modules/slices"
-import styled, { createGlobalStyle, css } from 'styled-components';
+import styled from 'styled-components';
 
 export default function Join() { 
     const dispatch = useDispatch()
@@ -15,24 +15,24 @@ export default function Join() {
     const passwordRef = useRef<string | null | undefined>(null)
     passwordRef.current = watch("password")
     return (<>
-       
-        <form onSubmit={handleSubmit(onSubmit)} method="post">
-        <Sheet >
+        
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Sheet >
             <thead>
               <Row>
-              <Cell colSpan={2}><h6>회원가입</h6></Cell>
+                <Cell colSpan={2}><h6>회원가입</h6></Cell>
               </Row>
             </thead>
             <tbody>
               <Row>
-              <Cell>
-          <label htmlFor="email">이메일(ID):</label>
-          <input 
+                <Cell>
+                <label htmlFor="email">이메일(ID)</label></Cell>
+                <Cell><Input 
             {...register("email", { 
               required: true,
               maxLength: 30,
               pattern: {
-                  value: /^([\w-]+( ?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
+                  value: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
                   message: "이메일 형식에 맞게 입력해주세요"
               }
           })}
@@ -40,11 +40,10 @@ export default function Join() {
             placeholder="name@example.com"
             required minLength= {10} maxLength={20}/> <br/>
             
-            {errors.email && <p>{errors.email.message}</p>}</Cell></Row>
+            {errors.email && <p>{errors.email.message}</p>} </Cell></Row>
             <Row><Cell>
-
-          <label htmlFor="password">비밀번호:</label></Cell>
-          <Cell><input 
+          <label htmlFor="password">비밀번호</label></Cell>
+          <Cell><Input 
             {...register("password", { 
               required: true, 
               minLength: {
@@ -58,9 +57,10 @@ export default function Join() {
             })}
             type="password" 
             placeholder="비밀번호(영문, 숫자 8자리 이상)"
-            id="password" name="password" required /> <br/>
+            id="password" name="password" required /> 
           {errors.password && <p>{errors.password.message}</p>}
-          <input
+          
+          <Input
                         {...register("cpassword", { 
                             required: true,
                             validate: (value) => value === passwordRef.current,
@@ -69,15 +69,17 @@ export default function Join() {
                         placeholder="비밀번호 재확인"
                         id="cpassword"
                         name="cpassword"
-                        className="block w-full px-4 py-3 text-sm border rounded-lg outline-none"/>
-                    {errors.cpassword && <p>비밀번호가 일치하지 않습니다</p>}</Cell>
+                        />
+                    {errors.cpassword && <p>비밀번호가 일치하지 않습니다</p>}
+                </Cell>
               </Row>
+             
               <Row>
                 <Cell>
-          <label htmlFor="username">이름(실명):</label></Cell><Cell>
-          <input
+                <label htmlFor="username">이름(실명)</label></Cell><Cell>
+          <Input
           {...register("username", { 
-            
+            required: true, 
             maxLength: {
                 value: 20,
                 message: "20자 이하로 입력해주세요"
@@ -86,29 +88,32 @@ export default function Join() {
           
           type="text" id="username" name="username" 
           placeholder="사용자 이름"
-          /> 
-        {errors.username && <p>{errors.username.message}</p>}<br/>
-        </Cell>
+          required /> 
+        {errors.username && <p>{errors.username.message}</p>}
+                </Cell>
               </Row>
               <Row>
                 <Cell>
-
-          <label htmlFor="phone">전화번호:</label></Cell>
-          <Cell><input 
+                <label htmlFor="phone">전화번호</label></Cell>
+                <Cell><Input 
                 {...register("phone", { 
-                   
+                  required: true, 
                   maxLength: {
                       value: 20,
-                      message: "20자 이하로 입력해주세요"
+                      message: "전화번호 입력해주세요"
                   }
-              })}
-          type="text" id="phone" name="phone"  />  </Cell>
-          </Row>
-          <Row>
-          <label htmlFor="birth">생년월일(20001201):</label> 
-          <Cell><input 
+              
+              })} 
+                type="text" id="phone" name="phone" /> 
+
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
+                <label htmlFor="birth">생년월일</label> </Cell>
+                <Cell><Input 
           {...register("birth", { 
-            
+            required: true, 
             maxLength: {
                 value: 8,
                 message: "생년월일 8자리까지 입력해주세요"
@@ -123,84 +128,84 @@ export default function Join() {
             }
         })}
           
-
           type="text" id="birth" name="birth" 
           placeholder="생년월일 8자리(ex: 19991212)"
           /> 
           {errors.birth && <p>{errors.birth.message}</p>}
-          </Cell>
+                </Cell>
               </Row>
               <Row>
-
-          <label htmlFor="address">주소:</label>
-          <Cell><input
-          {...register("address", { 
-      
-            maxLength: {
-                value: 20,
-                message: "20자 이하로 입력해주세요"
-            }
-        })}
-           type="text" id="address" name="address" /> <br/>
-
-          </Cell>
-           </Row>
-          <Row>
-          <Cell>
-          <label htmlFor="job">직업:</label>
-          <input 
-          {...register("job", { 
-           
-            maxLength: {
-                value: 20,
-                message: "20자 이하로 입력해주세요"
-            }
-        })}
-          type="text" id="job" name="job" /> <br/>
-          </Cell>
-          </Row>
-       <Row>
-      <Cell>
-          <label htmlFor="interests">관심사항 :</label>
-          <Cell><input 
-          {...register("interests", { 
-            
-            maxLength: {
-                value: 20,
-                message: "20자 이하로 입력해주세요"
-            }
-        })}
-          type="text" id="interests" name="interests" /> <br/></Cell>
-        </Cell>
-        </Row>
+                <Cell><label htmlFor="address">주소</label></Cell>
+                <Cell><Input 
+                {...register("address", { 
+                  required: true, 
+                  maxLength: {
+                      value: 20,
+                      message: "주소 입력해주세요"
+                  }
+              
+              })} 
+                type="text" id="address" name="address" /> </Cell>
+              </Row>
               <Row>
-        <Cell>
+                <Cell>
+                <label htmlFor="job">직업</label></Cell>
+                <Cell><Input
+                {...register("job", { 
+                  required: true, 
+                  maxLength: {
+                      value: 20,
+                      message: "직업 입력해주세요"
+                  }
+              
+              })} 
+                 type="text" id="job" name="job" /> 
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
+                <label htmlFor="interests">관심사항</label></Cell>
+                <Cell><Input
+                {...register("interests", { 
+                  required: true, 
+                  maxLength: {
+                      value: 100,
+                      message: "관심사항 입력해주세요"
+                  }
+              
+              })} 
+              type="text" id="interests" name="interests" /> 
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                 <Input type="checkbox" className="custom-control-input" id="aggrement" required /></Cell>
                 <Cell><label className="custom-control-label" htmlFor="aggrement">개인정보 수집 및 이용에 동의합니다.</label>
                 </Cell>
               </Row>
-                
-                <Row>
+              <Row>
                 <Cell colSpan={2}><button type="submit" >전송</button></Cell>
               </Row>
-          
-          </tbody>
+              
+            </tbody>
           </Sheet>
-          </form> 
+
           
+          </form> 
         </>)
 
     }
-    const Sheet = styled.table`
-    border: 1px solid black
-    width: 70%
-    `
-    const Row = styled.tr`
-    border: 1px solid black
-    `
-    const Cell = styled.td`
-    border: 1px solid black,
-    `
-    const Input = styled.input`
-    width: 100%
-    `
+
+const Sheet = styled.table`
+border: 1px solid black
+width: 70%
+`
+const Row = styled.tr`
+border: 1px solid black
+`
+const Cell = styled.td`
+border: 1px solid black,
+`
+const Input = styled.input`
+width: 100%
+`
