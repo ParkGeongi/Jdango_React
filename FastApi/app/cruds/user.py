@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import List
 
+from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -8,7 +9,7 @@ from app.admin.security import verify_password
 from app.bases.user import UserBase
 from app.models.user import User
 from app.schemas.user import UserDTO
-
+from starlette.responses import JSONResponse
 
 
 class UserCrud(UserBase, ABC):
@@ -31,11 +32,28 @@ class UserCrud(UserBase, ABC):
             return None
 
 
-    def update_user(self, request_user: UserDTO) -> str:
-        pass
-
-    def delete_user(self, request_user: UserDTO) -> str:
-        pass
+    def update_user(self,email:str, request_user: UserDTO):
+        user = User(**request_user.dict())
+        email = user.email
+        update_query = self.db.query(User).filter(User.email == email)
+        update = update_query.first()
+        if not update:
+            return 'fail'
+        update_data = request_user.dict(exclude_unset=True)
+        del(update_data['email'])
+        update_query.filter(User.email == email).update(update_data,synchronize_session=False)
+        self.db.commit()
+        return 'success'
+    def delete_user(self, email: str, request_user: UserDTO) -> str:
+        user = User(**request_user.dict())
+        email = user.email
+        delete_email_query = self.db.query(User).filter(User.email == email)
+        delete_email = delete_email_query.first()
+        if not delete_email:
+            return 'fail'
+        delete_email_query.delete(synchronize_session=False)
+        self.db.commit()
+        return 'success'
 
     def find_all_user(self, page: int) -> List[User]:
         print(f"page number is {page}")
@@ -53,7 +71,9 @@ class UserCrud(UserBase, ABC):
         else:
             return ""
 
-
+    def find_users_by_job(self, request_user: UserDTO) -> list:
+        user = User(**request_user.dict())
+        return self.db.query(User).filter(User.job == user.job).all()
 
 
 

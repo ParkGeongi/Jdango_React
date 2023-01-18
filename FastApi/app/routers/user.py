@@ -43,40 +43,57 @@ async def login(dto:UserDTO ,db: Session = Depends(get_db)):
             new_token = generate_token(login_user.email)
             print(new_token)
             login_user.token = new_token
-            result = {'data':login_user}
+            result = login_user
         else:
-            print('로그인 실패')
+            print('로그인 비밀번호 실패')
             result = JSONResponse(status_code=400,content = dict(msg="비밀번호 일치하지 않습니다."))
     else:
+        print('로그인 이메일 실패')
         result = JSONResponse(status_code=400, content=dict(msg="이메일 주소가 일치하지 않습니다."))
 
     return result
 
-@router.put("/{id}")
-async def update(id:str,item: User, db: Session = Depends(get_db)):
-    UserCrud(db).update(id=id,item=item)
-    return {"data":"sucess"}
+@router.put("/update/{email}")
+async def update(email:str,dto:UserDTO ,db: Session = Depends(get_db)):
+    user_crud = UserCrud(db)
+    print(f" 업데이트에 진입한 시간: {current_time()} ")
+    result = user_crud.update_user(email=email,request_user=dto)
+    if result == 'success':
+        return {'data', f'update {email} success'}
 
-@router.delete("/{id}")
-async def delete(id:str,user: User, db: Session = Depends(get_db)):
-    UserCrud(db).delte(id=id,item=user,db=db)
-    return {"data":"sucess"}
+    return JSONResponse(status_code=404, content=dict(msg="이메일 주소가 없습니다."))
+
+@router.delete("/delete/{email}")
+async def delete(email:str,dto:UserDTO ,db: Session = Depends(get_db)):
+    user_crud = UserCrud(db)
+    print(f" 삭제에 진입한 시간: {current_time()} ")
+    result = user_crud.delete_user(email=email,request_user=dto)
+    if result =='success':
+        return {'data',f'delete {email} success'}
+    else:
+        return JSONResponse(status_code=404, content=dict(msg="이메일 주소가 없습니다."))
+
 
 ## Q
 @router.get("/{page}")
-async def get_users(page, db: Session = Depends(get_db)):
-    ls = UserCrud(db).find_users(page,db)
-    return {"data": ls}
+async def get_users(page:int ,db: Session = Depends(get_db)):
+    user_crud = UserCrud(db)
+    result = user_crud.find_all_user(page)
+    return result
+
+
+@router.get("/job/{page}")
+async def get_users_by_job(dto: UserDTO, db: Session = Depends(get_db)):
+    user_crud = UserCrud(db)
+    result = user_crud.find_users_by_job(request_user=dto)
+    return result
 
 @router.get("/email/{id}")
-async def get_user(id : str,db: Session = Depends(get_db)):
-    UserCrud(db).find_user(id=id,db=db)
+async def get_user(dto:UserDTO ,db: Session = Depends(get_db)):
+    user_crud = UserCrud(db)
     return {"data": "sucess"}
 
-@router.get("/job/{search}/{page}")
-async def get_users_by_job(search: str, page: int, db: Session = Depends(get_db)):
-    UserCrud(db).find_users_by_job(search,page,db)
-    return {"data":"sucess"}
+
 
 '''
 @router.get("/2")

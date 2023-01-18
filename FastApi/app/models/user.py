@@ -27,8 +27,7 @@ class User(Base,TimstampMixin):
 
     class Config:
         arbitrary_types_allowed = True
-        BaseConfig.arbitrary_types_allowed = True
-        allow_population_by_field_name = True
+
 
     def __str__(self):
         return f'아이디: {self.userid}, \n ' \

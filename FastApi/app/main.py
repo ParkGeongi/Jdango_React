@@ -4,8 +4,9 @@ from fastapi import FastAPI, APIRouter, Depends, HTTPException
 from fastapi_sqlalchemy import DBSessionMiddleware
 
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import HTMLResponse
 
-from app.admin.utils import current_time
+from app.admin.utils import current_time, current_time1
 from app.models.user import User
 from app.routers.user import router as user_router
 from app.routers.article import router as post_router
@@ -13,6 +14,8 @@ from app.database import init_db
 from app.env import DB_URL
 import logging
 from fastapi.security import APIKeyHeader
+from .test.user import router as test_router
+
 API_TOKEN = 'SECRET_API_TOKEN'
 api_key_header = APIKeyHeader(name="Token")
 
@@ -23,6 +26,7 @@ print(f" ################ app.main Started At {current_time()} #################
 router = APIRouter()
 router.include_router(user_router, prefix="/users",tags=["users"])
 router.include_router(post_router, prefix="/articles",tags=["articles"])
+router.include_router(test_router,prefix='/test',tags=['test'])
 
 app = FastAPI()
 origins = ["http://localhost:3000"]
@@ -41,6 +45,9 @@ logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 #Base.query = db_session.query_property()
 # Dependency
 
+@app.on_event('startup')
+async def on_startup():
+    await init_db()
 
 @app.get("/progected-router")
 async def protected_route(token: str = Depends(api_key_header)):
@@ -48,12 +55,19 @@ async def protected_route(token: str = Depends(api_key_header)):
         raise HTTPException(status_code=403)
     return{"잘못된":  "경로입니다."}
 
-@app.on_event('startup')
-async def on_startup():
-    await init_db()
 @app.get("/")
-async def root():
-    return {"message": "Hello World"}
+async def home():
+    return HTMLResponse(content=f"""
+    <body>
+    <div style="width: 400px; margin: 50 auto;">
+         <h3> {current_time1()} </h3>
+        <h1>현재 서버 구동 중 입니다.</h1>
+        <h3>10:10:10</h3>
+    </div>
+</body>
+      
+    """
+)
 
 @app.get("/hello/{name}")
 async def say_hello(name: str):

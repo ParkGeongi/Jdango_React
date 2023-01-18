@@ -16,11 +16,11 @@ class UserBase(metaclass=ABCMeta):
 
 
     @abstractmethod
-    def update_user(self, request_user: UserDTO) -> str: pass
+    def update_user(self,email:str, request_user: UserDTO) -> str: pass
 
 
     @abstractmethod
-    def delete_user(self, request_user: UserDTO) -> str: pass
+    def delete_user(self,email:str, request_user: UserDTO) -> str: pass
 
 
     @abstractmethod
@@ -31,3 +31,5 @@ class UserBase(metaclass=ABCMeta):
 
     @abstractmethod
     def find_userid_by_email(self, request_user: UserDTO) -> str: pass
+    @abstractmethod
+    def find_users_by_job(self, request_user: UserDTO) -> UserDTO:pass
