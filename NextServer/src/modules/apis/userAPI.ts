@@ -26,18 +26,21 @@ export const user = {
     async login(payload: User){
         try{
             const response : AxiosResponse<any, User[]> =
-            await author.post('/users/login', payload)
+            await author.post('http://localhost:8000/users/login', payload)
             alert(`3 API payload is ${JSON.stringify(response.data)}`)
             localStorage.clear()
-            localStorage.setItem("session", JSON.stringify(response.data))
+            const data = response.data
+            localStorage.setItem("session", data.msg)
+            alert(`4 API 스토리지에 저장된 토큰 ${localStorage.getItem("session")}`)
             return response.data
         }catch(err){
             return err;
         }
     },
-    async logout(){
+    async logout(payload: User){
         try{
-            await client.post('/users/logout')
+            const response : AxiosResponse = await client.post('/users/logout', payload)
+            return response.data
         } catch(err){
             console.log(err)
             return err;

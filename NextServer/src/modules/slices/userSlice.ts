@@ -18,7 +18,7 @@ const initialState: UserState = {
     status: 'idle',
     isLoggined: false,
     error: null,
-    token: 'original'
+    token: ''
 }
 
 const userSlice = createSlice({
@@ -26,7 +26,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         joinRequest(state: UserState, action: PayloadAction<User>){
-            alert(`2 joinRequest ${JSON.stringify(action.payload)}`)
+
             state.status = 'loading'
             state.error = null
         },
@@ -44,19 +44,22 @@ const userSlice = createSlice({
         },
         loginSuccess(state: UserState, {payload}){
             //alert(`&&&&&&&& loginSuccess >>>> payload is ${JSON.stringify(payload)}`)
-            alert(`4 token >>>> payload is ${payload.token}`)
+   
             state.status = 'idle'
             state.data = [...state.data, payload]
             state.token = payload.token
-            alert(`5 token >>>> state.token is ${state.token}`)
+
         },
         loginFailure(state: UserState, {payload}){
             state.status = 'failed'
             state.data = [...state.data, payload]
         },
-        logoutRequest(state: UserState) {
+        logoutRequest(state: UserState,{payload}) {
+            
             state.status = 'loading';
             state.error = null;
+            state.token = ''
+            alert(`5 token >>>> state.token is ${JSON.stringify(payload) }`)
         },
         logoutSuccess(state: UserState ){
             state.status = 'idle'

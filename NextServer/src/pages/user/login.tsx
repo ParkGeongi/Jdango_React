@@ -4,9 +4,11 @@ import { Login,  GoogleLogin} from "@/components/user"
 import { User } from "@/modules/types"
 import { useDispatch } from "react-redux"
 import { loginRequest } from "@/modules/slices"
+import {useAppDispatch, useAppSelector} from '@/hooks'
+import { UserLoginInput } from "@/modules/types"
 
 const LoginPage: NextPage = function(){
-    const [loginInfo, setLoginInfo] = useState<User>({email:'', password:''})
+    const [loginInfo, setLoginInfo] = useState<UserLoginInput>({email:'', password:''})
     const dispatch = useDispatch()
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -16,6 +18,7 @@ const LoginPage: NextPage = function(){
     }
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        
         dispatch(loginRequest(loginInfo))
     }
     return (
