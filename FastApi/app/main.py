@@ -1,6 +1,7 @@
 import os
 import sys
 from fastapi import FastAPI, APIRouter, Depends, HTTPException
+from fastapi_pagination import add_pagination
 from fastapi_sqlalchemy import DBSessionMiddleware
 
 from starlette.middleware.cors import CORSMiddleware
@@ -10,6 +11,8 @@ from app.admin.utils import current_time, current_time1
 from app.models.user import User
 from app.routers.user import router as user_router
 from app.routers.article import router as post_router
+from app.admin.pagnation import router as page_router
+
 from app.database import init_db
 from app.env import DB_URL
 import logging
@@ -28,7 +31,11 @@ router.include_router(user_router, prefix="/users",tags=["users"])
 router.include_router(post_router, prefix="/articles",tags=["articles"])
 router.include_router(test_router,prefix='/test',tags=['test'])
 
+router.include_router(page_router,prefix='/pagination',tags=['pagnation'])
+
+
 app = FastAPI()
+
 origins = ["http://localhost:3000"]
 app.add_middleware(
     CORSMiddleware,
@@ -44,7 +51,7 @@ logging.basicConfig()
 logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 #Base.query = db_session.query_property()
 # Dependency
-
+add_pagination(app)
 @app.on_event('startup')
 async def on_startup():
     await init_db()
@@ -72,7 +79,9 @@ async def home():
 @app.get("/hello/{name}")
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
-
+@app.get("/no-match-token")
+async def no_match_token():
+    return {"message": f"토큰 유효시간이 지났습니다."}
 
 
 

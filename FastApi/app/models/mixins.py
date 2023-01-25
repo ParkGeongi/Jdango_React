@@ -8,3 +8,4 @@ class TimstampMixin(object):
     now = kst.strftime("%Y-%m-%d %H:%M:%S")
     created = Column(Timestamp,nullable=True, server_default =text("current_timestamp"))
     modified = Column(Timestamp,nullable=True, server_default =text("current_timestamp on update current_timestamp"))
+

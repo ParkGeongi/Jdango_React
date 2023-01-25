@@ -10,3 +10,5 @@ pytz
 pyjwt
 shortuuid
 passlib
+fastapi-pagination
+Faker

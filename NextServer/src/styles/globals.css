@@ -14,7 +14,6 @@ a {
 * {
   box-sizing: border-box;
 }
-
 .page-container {
   width: 100%;
   max-width: 800px;
@@ -72,7 +71,6 @@ a {
   color: #6c757d;
   pointer-events: none;
 }
-
 .pagination {
   display: flex;
   flex-wrap: wrap;

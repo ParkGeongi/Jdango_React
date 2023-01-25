@@ -11,5 +11,6 @@ class ArticleDTO(BaseModel):
     created: Optional[str]
     modified: Optional[str]
     userid: Optional[str]
+
     class Config:
         orm_mode = True

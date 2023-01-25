@@ -19,8 +19,8 @@ password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def myuuid():
     alphabet = string.ascii_lowercase + string.digits
-    su = shortuuid.ShortUUID(alphabet=alphabet)
-    return su.random(length=8)
+    su = shortuuid.ShortUUID(alphabet)
+    return su.random(length=9)
 
 def get_hashed_password(plain_password: str) -> str:
     return password_context.hash(plain_password)
@@ -41,7 +41,7 @@ def generate_token(subject: Union[str, Any], expires_delta: int = None):
 def generate_token_by_secrets():
     return secrets.token_urlsafe(32) # python3.8 기준으로 DEFAULT_ENTROPY == 32
 
-def refresh_token(subject: Union[str, Any], expires_delta: int = None):
+def refresh_token(subject: Union[str, Any], expires_delta: timedelta = None):
     if expires_delta is not None:
         expires_delta = datetime.utcnow() + expires_delta
     else:
@@ -53,3 +53,6 @@ def refresh_token(subject: Union[str, Any], expires_delta: int = None):
 
 def get_expiration_date():
     return utc_seoul() + timedelta(days=3)
+
+if __name__ == '__main__':
+    print(myuuid())
