@@ -12,3 +12,4 @@ shortuuid
 passlib
 fastapi-pagination
 Faker
+mangum

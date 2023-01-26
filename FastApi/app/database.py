@@ -2,7 +2,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, orm
 from sqlalchemy.orm import sessionmaker, scoped_session
-from app.env import DB_URL
+from app.env_localhost import DB_URL
 
 engine = create_engine(DB_URL, echo=True, pool_pre_ping=True)
 SessionLocal = scoped_session(

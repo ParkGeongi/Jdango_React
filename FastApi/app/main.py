@@ -12,12 +12,12 @@ from app.models.user import User
 from app.routers.user import router as user_router
 from app.routers.article import router as post_router
 from app.admin.pagnation import router as page_router
-
 from app.database import init_db
-from app.env import DB_URL
+from app.env_localhost import DB_URL
 import logging
 from fastapi.security import APIKeyHeader
 from .test.user import router as test_router
+from mangum import Mangum
 
 API_TOKEN = 'SECRET_API_TOKEN'
 api_key_header = APIKeyHeader(name="Token")
@@ -83,7 +83,7 @@ async def say_hello(name: str):
 async def no_match_token():
     return {"message": f"토큰 유효시간이 지났습니다."}
 
-
+handler = Mangum(app)
 
 '''
 app.add_middleware(DBSessionMiddleware, db_url=DATABASE)
