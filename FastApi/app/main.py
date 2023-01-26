@@ -83,8 +83,6 @@ async def say_hello(name: str):
 async def no_match_token():
     return {"message": f"토큰 유효시간이 지났습니다."}
 
-handler = Mangum(app)
-
 '''
 app.add_middleware(DBSessionMiddleware, db_url=DATABASE)
 @app.get("/")

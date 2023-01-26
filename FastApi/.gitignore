@@ -17,6 +17,7 @@ Pipfile.lock
 env3.*
 app/env.py
 app/env_localhost.py
+docker/api/Dockerfile
 docs_build
 venv
 docs.zip
