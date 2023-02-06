@@ -129,3 +129,4 @@ def sqlalchemy_method():
         print(f"data : {row}")
     return result
 '''
+handler = Mangum(app)
